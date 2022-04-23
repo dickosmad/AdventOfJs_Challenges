@@ -1,6 +1,7 @@
 # AdventOfJs_Challenges
 24 Challenges suggested by advent of JS
-Users should be able to:
+
+### Users should be able to:
 
 Start the timer by clicking on the start link/button.
 Once the user clicks start, the word start will change to stop. Then, the user can click on the stop button to make the timer stop.
