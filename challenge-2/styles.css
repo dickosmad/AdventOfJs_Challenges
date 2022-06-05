@@ -142,8 +142,17 @@ button.in-cart {
   background: black;
 }
 
-.cart p.empty {
+.cart .empty {
   padding-left: 40px;
+  display:flex;
+  height: 800px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.empty img{
+  height: 250px;
+  width: 250px;
 }
 
 .cart-summary {

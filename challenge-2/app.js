@@ -45,15 +45,18 @@ const menuItems = [
 
 const cartElement = document.querySelector(".cart");
 const menuElement = document.querySelector("#menu-items");
+let inCart = false;
 
 function renderMenu() {
   menuItems.forEach((menuItem) => {
     const { name, price, image, alt } = menuItem;
+    let inCart = cartItems.some((cartItem) => cartItem.name === name);
+    console.log("line 54 incart", inCart);
     menuElement.innerHTML += `
       <li>
         <div class="plate">
           <img
-            src="./src/images/${image}"
+            src="./images/${image}"
             alt="${alt}"
             class="plate"
           />
@@ -61,27 +64,35 @@ function renderMenu() {
         <div class="content">
           <p class="menu-item">${name}</p>
           <p class="price">$${price}</p>
-          <button class="add" onclick="addToCart('${name}')">Add to Cart</button>
+          ${
+            inCart
+              ? `<button class="in-cart">
+                <img src="./images/check.svg" alt="Check" />
+                In Cart
+              </button>`
+              : `<button class="add" onclick="addToCart('${name}')">
+                Add to Cart
+              </button>`
+          }
+          
         </div>
       </li>
     `;
   });
 }
-
 let cartItems = [];
-
 // Function to update the count of cart item
 // it takes action which can be plus or minus
 // If action is plus we increment the count of item
 // If action is minus we decrement the count of item
-window.updateCartItemCount = function (action, name) {
+function updateCartItemCount(action, name) {
   cartItems = cartItems.map((item) => {
     let count = item.count;
 
     if (item.name === name) {
       if (action === "plus") {
         count++;
-      } else if (action === "minus" && count > 1) {
+      } else if (action === "minus") {
         count--;
       }
     }
@@ -93,11 +104,12 @@ window.updateCartItemCount = function (action, name) {
   });
 
   updateCart();
-};
+}
 
-window.addToCart = function (name) {
+function addToCart(name) {
   if (cartItems.some((item) => item.name === name)) {
     // If Item is already there in cart we just update the count
+
     updateCartItemCount("plus", name);
   } else {
     // If item is not there in cart then we add it in cart and set initial count to 1
@@ -108,9 +120,9 @@ window.addToCart = function (name) {
       count: 1,
     });
   }
-
   updateCart();
-};
+  renderMenu();
+}
 
 // Update the cart as we add items or remove items
 // This will render the cart again according to latest array data
@@ -171,34 +183,39 @@ function renderCartItems() {
     cartSummaryElement.classList.add("cart-summary");
     cartItems.forEach((cartItem) => {
       const { name, price, image, alt, count } = cartItem;
-      cartSummaryElement.innerHTML += `
-        <li>
-          <div class="plate">
-            <img
-              src="./src/images/${image}"
-              alt="${alt}"
-              class="plate"
-            />
-            <div class="quantity">${count}</div>
-          </div>
-          <div class="content">
-            <p class="menu-item">${name}</p>
-            <p class="price">${price}</p>
-          </div>
-          <div class="quantity__wrapper">
-            <button class="decrease" onclick="updateCartItemCount('minus', '${name}')">
-              <img src="./src/images/chevron.svg" />
-            </button>
-            <div class="quantity">${count}</div>
-            <button class="increase" onclick="updateCartItemCount('plus', '${name}')">
-              <img src="./src/images/chevron.svg" />
-            </button>
-          </div>
-          <div class="subtotal">
-            $${(price * count).toFixed(2)}
-          </div>
-        </li>
-      `;
+      let cartItemLi = `
+      <li>
+        <div class="plate">
+          <img
+            src="./images/${image}"
+            alt="${alt}"
+            class="plate"
+          />
+          <div class="quantity">${count}</div>
+        </div>
+        <div class="content">
+          <p class="menu-item">${name}</p>
+          <p class="price">${price}</p>
+        </div>
+        <div class="quantity__wrapper">
+          <button class="decrease" onclick="updateCartItemCount('minus', '${name}')">
+            <img src="./images/chevron.svg" />
+          </button>
+          <div class="quantity">${count}</div>
+          <button class="increase" onclick="updateCartItemCount('plus', '${name}')">
+            <img src="./images/chevron.svg" />
+          </button>
+        </div>
+        <div class="subtotal">
+          $${(price * count).toFixed(2)}
+        </div>
+      </li>
+    `;
+      if (count === 0) {
+        cartItemLi = "";
+      } else {
+        cartSummaryElement.innerHTML += cartItemLi;
+      }
     });
     cartElement.appendChild(cartSummaryElement);
   }
