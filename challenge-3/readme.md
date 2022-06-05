@@ -14,10 +14,5 @@ Users should be able to:
 * The audio clips are numbered, but I did not specifically number the keys. You can pick which key should be associated with each audio file.
 * If a user clicks on one key, then immediately clicks on a second key. The 2 files should both play. Meaning, clicking on one key will not stop an existing audio file from playing.
 
-Getting Started
-To get started, download the zip file. This includes all the project assets you need to get started: HTML, CSS, images, and fonts.
-Take a look around. Look at the project's Figma file. This is a great way to see how the pieces and parts should look within the browser.
-Open the project's README.md file. It has additional information on how the project is structured.
-Customize your project/file architecture to your liking.
-Happy coding!
+
 Once you're finished, share your work using #adventofjs
